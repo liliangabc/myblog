@@ -1,5 +1,5 @@
 <template>
-<div class="page-user-resetpwd">
+<div class="entry-container page-user-resetpwd">
 reset
 </div>
 </template>
