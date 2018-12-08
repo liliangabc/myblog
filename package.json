@@ -12,6 +12,7 @@
     "compression": "^1.7.3",
     "connect-mongo": "^2.0.3",
     "cookie-parser": "^1.4.3",
+    "element-ui": "^2.4.11",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "formidable": "^1.2.1",
@@ -26,6 +27,7 @@
     "@vue/cli-plugin-babel": "^3.2.0",
     "@vue/cli-plugin-pwa": "^3.2.0",
     "@vue/cli-service": "^3.2.0",
+    "babel-plugin-component": "^1.1.1",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "vue-template-compiler": "^2.5.17"
