@@ -1,12 +1,15 @@
 <template>
 <div class="page-user-login">
-  <el-form label-width="70px" label-position="left" status-icon :model="formData" :rules="rules" ref="form">
+  <el-form label-width="70px" status-icon :model="formData" :rules="rules" ref="form">
     <el-form-item label="邮箱" prop="email">
       <el-input v-model.trim="formData.email" placeholder="请输入你的邮箱地址"></el-input>
     </el-form-item>
     <el-form-item label="密 码" prop="password">
       <el-input type="password" v-model.trim="formData.password" placeholder="请输入你的密码"></el-input>
     </el-form-item>
+    <div class="forget-pwd">
+      <router-link to="resetpwd">忘记密码?</router-link>
+    </div>
     <el-button class="btn-submit" type="primary" :loading="loading" @click="handleSubmit">{{loading ? '请稍后...' : '登 录'}}</el-button>
   </el-form>
 </div>

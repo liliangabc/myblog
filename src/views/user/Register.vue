@@ -1,6 +1,6 @@
 <template>
 <div class="page-user-register">
-  <el-form label-width="70px" label-position="left" status-icon :model="formData" :rules="rules" ref="form">
+  <el-form label-width="70px" status-icon :model="formData" :rules="rules" ref="form">
     <el-form-item label="用户名" prop="userName">
       <el-input v-model.trim="formData.userName" placeholder="请输入你的昵称"></el-input>
     </el-form-item>
@@ -12,6 +12,12 @@
     </el-form-item>
     <el-form-item label="确认密码" prop="confirmPwd">
       <el-input type="password" v-model.trim="formData.confirmPwd" placeholder="请再次输入密码" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="验证码" prop="validcode">
+      <el-input v-model="formData.validcode" maxlength="4" placeholder="请输入验证码"></el-input>
+      <div class="pic-validcode">
+        <img :src="require('@/assets/logo.png')">
+      </div>
     </el-form-item>
     <el-button class="btn-submit" type="success" :loading="loading" @click="handleSubmit">{{loading ? '请稍后...' : '注 册'}}</el-button>
   </el-form>
