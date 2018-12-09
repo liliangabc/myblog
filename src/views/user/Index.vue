@@ -41,7 +41,6 @@ export default {
       font-size: 20px;
     }
     .tabs {
-      text-align: center;
       margin-bottom: 24px;
       color: #606266;
       display: flex;
@@ -64,6 +63,7 @@ export default {
     .forget-pwd {
       text-align: right;
       margin: -20px 0 20px;
+      font-size: 14px;
       a:hover {
         color: #303133;
       }

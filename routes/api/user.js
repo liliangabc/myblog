@@ -47,8 +47,8 @@ router.post('/register', (req, res) => {
  */
 router.post('/login', (req, res) => {
   let { email, password } = req.body
-  let errmsg = validator.validEmailResult(email) || validator.validPwdResult(password)
-  if (errmsg) return res.send(403, constants.EMAIL_OR_PWD_ERROR)
+  let validResult = validator.validEmailResult(email) || validator.validPwdResult(password)
+  if (validResult) return res.send(403, constants.EMAIL_OR_PWD_ERROR)
   let md5 = crypto.createHash('md5')
   password = md5.update(password).digest('hex')
   User.findOne({ email }, (err, user) => {
@@ -56,7 +56,37 @@ router.post('/login', (req, res) => {
     if (!user || user.password !== password) {
       return res.send(403, constants.EMAIL_OR_PWD_ERROR)
     }
-    res.json({ info: constants.LOGIN_SUCCESS, data: user })
+    req.session.userId = user._id
+    res.json({
+      info: constants.LOGIN_SUCCESS,
+      data: {
+        id: user._id,
+        email: user.email,
+        userName: user.userName
+      }
+    })
+  })
+})
+
+/**
+ * 重置密码
+ */
+router.post('/reset_pwd', (req, res) => {
+  let { email, captcha, password } = req.body
+  let emailValidResult = validator.validEmailResult(email)
+  let pwdValidResult = validator.validPwdResult(password)
+  let validResult = emailValidResult || pwdValidResult
+  if (validResult) return res.send(403, validResult)
+  if (+captcha !== req.session.emailCaptcha) {
+    return res.send(403, constants.CAPTCHA_ERROR)
+  }
+  User.updateOne({ email: email.trim() }, { $set: { password } }, (err, raw) => {
+    if (err) return res.send(500, constants.DB_ERROR)
+    if (raw) {
+      return res.json({ info: constants.PWD_RESET_SUCCESS })
+    } else {
+      return res.send(403, constants.USER_NOT_FIND)
+    }
   })
 })
 
@@ -65,13 +95,6 @@ router.post('/login', (req, res) => {
  */
 router.post('/logout', (req, res) => {
   res.send('用户退出')
-})
-
-/**
- * 重置密码
- */
-router.post('/reset_pwd', (req, res) => {
-  res.send('重置密码')
 })
 
 module.exports = router

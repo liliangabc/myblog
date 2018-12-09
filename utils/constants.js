@@ -14,5 +14,8 @@ module.exports = {
   EMAIL_USED: '该邮箱已被注册',
   EMAIL_OR_PWD_ERROR: '邮箱或密码错误',
   REGISTER_SUCCESS: '恭喜你！注册成功',
-  LOGIN_SUCCESS: '登录成功'
+  LOGIN_SUCCESS: '登录成功',
+  PWD_RESET_SUCCESS: '密码重置成功',
+  EMAIL_CAPTCHA_SEND_SUCCESS: '验证码已发送到您的邮箱，24小时内有效，请查收邮件',
+  SMTP_ERROR: '邮件服务器连接错误'
 }
