@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       loading: false,
-      formData: { email: 'll917274996@live.co' },
+      formData: { email: 'll917274996@live.com' },
       rules: {
         email: [
           { required: true, type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
@@ -35,12 +35,12 @@ export default {
       this.$refs.form.validate(valid => {
         if (!valid) return
         this.loading = true
-        this.$http.post('/api/user/login', this.formData).then(({data}) => {
+        this.$http.post('user/login', this.formData).then(({data}) => {
           this.loading = false
           this.$message.success(data.info)
         }).catch(err => {
           this.loading = false
-          this.$message.error(err.response.data)
+          this.$message.error(err.message)
         })
       })
     }

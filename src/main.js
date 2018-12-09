@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import axios from 'axios'
+import axios from './plugins/axios'
 
 import 'element-ui/lib/theme-chalk/index.css'
 import './plugins/element-ui'

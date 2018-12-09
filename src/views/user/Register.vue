@@ -13,10 +13,10 @@
     <el-form-item label="确认密码" prop="confirmPwd">
       <el-input type="password" v-model.trim="formData.confirmPwd" placeholder="请再次输入密码" autocomplete="off"></el-input>
     </el-form-item>
-    <el-form-item label="验证码" prop="validcode">
-      <el-input v-model="formData.validcode" maxlength="4" placeholder="请输入验证码"></el-input>
-      <div class="pic-validcode">
-        <img :src="require('@/assets/logo.png')">
+    <el-form-item label="验证码" prop="captcha">
+      <el-input v-model="formData.captcha" maxlength="4" placeholder="请输入验证码"></el-input>
+      <div class="pic-captcha">
+        <img ref="captcha" @click="handleGetCapcha">
       </div>
     </el-form-item>
     <el-button class="btn-submit" type="success" :loading="loading" @click="handleSubmit">{{loading ? '请稍后...' : '注 册'}}</el-button>
@@ -59,15 +59,23 @@ export default {
       this.$refs.form.validate(valid => {
         if (!valid) return
         this.loading = true
-        this.$http.post('/api/user/register', this.formData).then(({data}) => {
+        this.$http.post('user/register', this.formData).then(({data}) => {
           this.$message.success(data.info)
           this.$router.replace({ name: 'login' })
         }).catch(err => {
+          this.formData.captcha = ''
+          this.handleGetCapcha()
           this.$message.error(err.message)
           this.loading = false
         })
       })
+    },
+    handleGetCapcha() {
+      this.$refs.captcha.src = `/api/captcha?t=${Date.now()}`
     }
+  },
+  mounted() {
+    this.handleGetCapcha()
   }
 }
 </script>

@@ -74,18 +74,19 @@ export default {
         color: #303133;
       }
     }
-    .btn-send-validcode, .pic-validcode {
+    .btn-send-validcode, .pic-captcha {
       position: absolute;
       top: 0;
       right: 0;
       bottom: 0;
     }
-    .pic-validcode {
+    .pic-captcha {
       width: 100px;
       background-color: #dcdfe6;
       overflow: hidden;
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
+      cursor: pointer;
       img {
         width: 100%;
         height: 100%;
