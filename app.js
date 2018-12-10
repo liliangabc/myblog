@@ -1,4 +1,5 @@
 const http = require('http')
+const swig = require('swig')
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
@@ -20,6 +21,9 @@ app.use(expressSession({
   secret: config.sessionSecret,
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
+app.engine('swig', swig.renderFile)
+app.set('view engine', 'swig')
+
 require('./routes')(app)
 
 function startServer() {

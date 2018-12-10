@@ -3,7 +3,7 @@ module.exports = {
   DB_URL: (DB_URL || 'mongodb://127.0.0.1:27017') + '/appdata',
   sessionSecret: SESSION_SECRET || 'test2018',
   email: {
-    user: EMAIL_USER || 'll917274996@live.com',
+    user: EMAIL_USER || 'jserli@outlook.com',
     password: EMAIL_PWD || ''
   }
 }

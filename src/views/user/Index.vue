@@ -78,19 +78,14 @@ export default {
       position: absolute;
       top: 0;
       right: 0;
-      bottom: 0;
     }
     .pic-captcha {
       width: 100px;
+      height: 100%;
       background-color: #dcdfe6;
-      overflow: hidden;
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
       cursor: pointer;
-      img {
-        width: 100%;
-        height: 100%;
-      }
     }
   }
   .el-form-item__label {

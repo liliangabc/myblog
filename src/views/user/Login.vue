@@ -1,11 +1,11 @@
 <template>
 <div class="page-user-login">
-  <el-form label-width="70px" status-icon :model="formData" :rules="rules" ref="form">
+  <el-form label-width="70px" ref="form" hide-required-asterisk :model="formData" :rules="rules">
     <el-form-item label="邮箱" prop="email">
       <el-input v-model.trim="formData.email" placeholder="请输入你的邮箱地址"></el-input>
     </el-form-item>
     <el-form-item label="密 码" prop="password">
-      <el-input type="password" v-model.trim="formData.password" placeholder="请输入你的密码"></el-input>
+      <el-input type="password" v-model.trim="formData.password" placeholder="请输入密码"></el-input>
     </el-form-item>
     <div class="forget-pwd">
       <router-link to="resetpwd">忘记密码?</router-link>
@@ -22,20 +22,19 @@ export default {
       formData: { email: 'll917274996@live.com' },
       rules: {
         email: [
-          { required: true, type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
+          { required: true, type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
         ],
         password: [
-          { required: true, message: '请输入你的密码', trigger: 'blur' }
+          { required: true, message: '请输入你的密码', trigger: ['blur', 'change'] }
         ]
       }
     }
   },
   methods: {
     handleSubmit() {
-      this.$refs.form.validate(valid => {
-        if (!valid) return
+      this.$refs.form.validate().then(() => {
         this.loading = true
-        this.$http.post('user/login', this.formData).then(({data}) => {
+        this.$http.post('user/login', this.formData).then(data => {
           this.loading = false
           this.$message.success(data.info)
         }).catch(err => {
@@ -47,6 +46,3 @@ export default {
   }
 }
 </script>
-<style lang="less">
-
-</style>

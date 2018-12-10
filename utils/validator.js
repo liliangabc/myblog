@@ -20,7 +20,7 @@ exports.validUserNameResult = userName => {
  */
 exports.validPwdResult = password => {
   let strlen = typeof password === 'string' ? password.length : 0
-  return (strlen < 6 || strlen > 22) && USER_PWD_ERROR
+  return (strlen < 6 || strlen > 18) && USER_PWD_ERROR
 }
 
 /**

@@ -4,7 +4,12 @@ const userSchema = new mongoose.Schema({
   userName: String,
   password: String,
   email: String,
-  isActivate: Boolean
+  isActivate: Boolean,
+  activateCode: String,
+  createdDate: {
+    type: Date,
+    default: Date.now
+  }
 })
 
 module.exports = mongoose.model('users', userSchema)

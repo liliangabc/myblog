@@ -1,23 +1,21 @@
 <template>
 <div class="page-user-register">
-  <el-form label-width="70px" status-icon :model="formData" :rules="rules" ref="form">
+  <el-form label-width="70px" ref="form" hide-required-asterisk :model="formData" :rules="rules">
     <el-form-item label="用户名" prop="userName">
-      <el-input v-model.trim="formData.userName" placeholder="请输入你的昵称"></el-input>
+      <el-input v-model.trim="formData.userName" maxlength="15" placeholder="请输入你的昵称"></el-input>
     </el-form-item>
     <el-form-item label="邮箱" prop="email">
-      <el-input type="email" v-model="formData.email" placeholder="请输入你的邮箱地址"></el-input>
+      <el-input type="email" v-model.trim="formData.email" placeholder="请输入你的邮箱地址"></el-input>
     </el-form-item>
     <el-form-item label="密 码" prop="password">
-      <el-input type="password" v-model.trim="formData.password" maxlength="18" placeholder="请输入6-18位密码" autocomplete="off"></el-input>
+      <el-input type="password" v-model="formData.password" maxlength="18" placeholder="请输入6-18位密码"></el-input>
     </el-form-item>
     <el-form-item label="确认密码" prop="confirmPwd">
-      <el-input type="password" v-model.trim="formData.confirmPwd" placeholder="请再次输入密码" autocomplete="off"></el-input>
+      <el-input type="password" v-model="formData.confirmPwd" maxlength="18" placeholder="请再次输入密码"></el-input>
     </el-form-item>
     <el-form-item label="验证码" prop="captcha">
       <el-input v-model="formData.captcha" maxlength="4" placeholder="请输入验证码"></el-input>
-      <div class="pic-captcha">
-        <img ref="captcha" @click="handleGetCapcha">
-      </div>
+      <img class="pic-captcha" title="点击刷新" ref="captcha" @click="handleGetCapcha">
     </el-form-item>
     <el-button class="btn-submit" type="success" :loading="loading" @click="handleSubmit">{{loading ? '请稍后...' : '注 册'}}</el-button>
   </el-form>
@@ -26,42 +24,41 @@
 <script>
 export default {
   data() {
-    const validatePass2 = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.formData.password) {
-        callback(new Error('两次输入密码不一致!'))
-      } else {
-        callback()
-      }
+    const validConfirmPwd = (rule, value, callback) => {
+      value && value === this.formData.password ? callback() : callback(new Error())
     }
     return {
       formData: {},
       loading: false,
       rules: {
         userName: [
-          { required: true, message: '请输入你的昵称', trigger: 'blur' }
+          { required: true, message: '请输入2-15位用户名', min: 2, max: 15, trigger: ['blur', 'change'] }
         ],
         email: [
-          { required: true, type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          { required: true, message: '请输入正确的邮箱地址', type: 'email', trigger: ['blur', 'change'] }
         ],
         password: [
-          { required: true, min: 6, max: 18, message: '请输入6-18位密码', trigger: 'blur' }
+          { required: true, message: '请输入6-18位密码', min: 6, max: 18, trigger: ['blur', 'change'] }
         ],
         confirmPwd: [
-          { validator: validatePass2, trigger: 'blur' }
+          { validator: validConfirmPwd, message: '确认密码不能为空，且必须和密码一致', trigger: ['blur', 'change'] }
+        ],
+        captcha: [
+          { required: true, message: '请输入验证码' }
         ]
       }
     }
   },
   methods: {
     handleSubmit() {
-      this.$refs.form.validate(valid => {
-        if (!valid) return
+      this.$refs.form.validate().then(() => {
         this.loading = true
-        this.$http.post('user/register', this.formData).then(({data}) => {
-          this.$message.success(data.info)
-          this.$router.replace({ name: 'login' })
+        this.$http.post('user/register', this.formData).then(data => {
+          this.$alert(data.info, '提示', {
+            callback: () => {
+              this.$router.replace({ name: 'login' })
+            }
+          })
         }).catch(err => {
           this.formData.captcha = ''
           this.handleGetCapcha()
