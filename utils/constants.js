@@ -20,5 +20,6 @@ module.exports = {
   SMTP_ERROR: '邮件服务器连接错误',
   SERVER_ERROR: '服务器内部错误',
   ACTIVATE_SUCCESS: '恭喜你！激活成功',
-  ACTIVATE_CODE_INVALID: '激活码无效'
+  ACTIVATE_CODE_INVALID: '激活码无效',
+  NO_ACTIVATE: '很抱歉！你的账号没有通过邮箱激活，必须激活后才可使用'
 }

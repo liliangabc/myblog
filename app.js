@@ -13,6 +13,7 @@ const app = express()
 app.set('port', process.env.PORT || 3000)
 app.use(compression())
 app.use(express.static(__dirname + '/dist'))
+app.use(express.static(__dirname + '/public'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(expressSession({

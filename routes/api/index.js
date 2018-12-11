@@ -1,7 +1,7 @@
 const express = require('express')
 const svgCaptcha = require('svg-captcha')
-const userRoute = require('./user')
-const postsRoute = require('./posts')
+const userRouter = require('./user')
+const postsRouter = require('./posts')
 const router = express.Router()
 
 router.get('/captcha', (req, res) => {
@@ -11,7 +11,7 @@ router.get('/captcha', (req, res) => {
 })
 
 module.exports = app => {
-  app.use('/api/user', userRoute)
-  app.use('/api/posts', postsRoute)
+  app.use('/api/user', userRouter)
+  app.use('/api/posts', postsRouter)
   app.use('/api', router)
 }
