@@ -26,5 +26,8 @@ module.exports = {
   ACTIVATE_CODE_INVALID: '激活码无效或已过期',
   NO_ACTIVATE: '很抱歉！你的账号没有通过邮箱激活，必须激活后才可使用；点击激活，系统将发送一封电子邮件到你的登录邮箱，请注意查收。',
   NO_USER_SESSION: '用户会话不存在',
-  USER_ACTIVATE_SUBJECT: '用户账号激活'
+  USER_ACTIVATE_SUBJECT: '用户账号激活',
+  USER_PWD_RESET_SUBJECT: '用户密码重置',
+  USER_EXIT_SUCCESS: '退出成功',
+  GET_SUCCESS: '获取成功'
 }

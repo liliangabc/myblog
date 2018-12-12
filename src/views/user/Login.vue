@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       loading: false,
-      formData: { email: 'll917274996@live.com', password: 'aaaaaa' },
+      formData: {},
       rules: {
         email: [
           { required: true, type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
@@ -52,7 +52,7 @@ export default {
               closeOnClickModal: false
             }).then(this.sendActivateMail)
           } else {
-            this.$message.success(data.info)
+            location.href = '/'
           }
         }).catch(err => {
           this.loading = false

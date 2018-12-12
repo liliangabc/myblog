@@ -165,15 +165,16 @@ router.post('/reset_pwd', (req, res) => {
   let pwdValidResult = validator.validPwdResult(password)
   let validResult = emailValidResult || pwdValidResult
   if (validResult) return res.send(403, validResult)
-  if (+captcha !== req.session.emailCaptcha) {
+  if (!captcha || captcha !== req.session.emailCaptcha) {
     return res.send(403, constants.CAPTCHA_ERROR)
   }
   User.updateOne({ email: email.trim() }, { $set: { password } }, (err, raw) => {
-    if (err) return res.send(500, constants.DB_ERROR)
-    if (raw) {
-      return res.json({ info: constants.PWD_RESET_SUCCESS })
+    if (err) {
+      res.send(500, constants.DB_ERROR)
+    } else if (raw) {
+      res.json({ info: constants.PWD_RESET_SUCCESS })
     } else {
-      return res.send(403, constants.USER_NOT_FIND)
+      res.send(403, constants.USER_NOT_FIND)
     }
   })
 })
@@ -189,15 +190,19 @@ router.post('/email_captcha', (req, res) => {
   email = email.trim()
   // 查找用户
   User.findOne({ email }, (err, user) => {
-    if (err) return res.send(500, constants.DB_ERROR)
-    if (!user) return res.send(403, constants.USER_NOT_FIND)
-    let captcha = 1000 + Math.floor(Math.random() * 9000)
-    emailHelper.sendMail(email, '密码重置', `您的验证码是：<b>${captcha}</b>`).then(() => {
-      req.session.emailCaptcha = captcha
-      res.json({ info: constants.EMAIL_CAPTCHA_SEND_SUCCESS })
-    }).catch(() => {
-      res.send(500, constants.SMTP_ERROR)
-    })
+    if (err) {
+      res.send(500, constants.DB_ERROR)
+    } else if (user) {
+      let captcha = (1000 + Math.floor(Math.random() * 9000)).toString()
+      emailHelper.sendMail(email, constants.USER_PWD_RESET_SUBJECT, `您的验证码是：<b>${captcha}</b>`).then(() => {
+        req.session.emailCaptcha = captcha
+        res.json({ info: constants.EMAIL_CAPTCHA_SEND_SUCCESS })
+      }).catch(() => {
+        res.send(500, constants.SMTP_ERROR)
+      })
+    } else {
+      res.send(403, constants.USER_NOT_FIND)
+    }
   })
 })
 
@@ -205,7 +210,28 @@ router.post('/email_captcha', (req, res) => {
  * 退出
  */
 router.post('/logout', (req, res) => {
-  res.send('用户退出')
+  delete req.session.userId
+  res.json({ info: constants.USER_EXIT_SUCCESS })
+})
+
+/**
+ * 获取用户信息
+ */
+router.get('/info', (req, res) => {
+  let { userId } = req.session
+  if (!userId) {
+    return res.json({ info: constants.NO_USER_SESSION, data: {} })
+  }
+  User.findById(userId, (err, user) => {
+    if (err) {
+      res.send(500, constants.DB_ERROR)
+    } else if (user) {
+      let { __v, password: _pwd, ...data } = JSON.parse(JSON.stringify(user))
+      res.json({ info: constants.GET_SUCCESS, data })
+    } else {
+      res.json({ info: constants.USER_NOT_FIND, data: {} })
+    }
+  })
 })
 
 /**

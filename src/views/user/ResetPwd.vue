@@ -6,7 +6,8 @@
   </el-form-item>
   <el-form-item label="验证码" prop="captcha">
     <el-input placeholder="请输入收到的验证码" maxlength="4" v-model="formData.captcha"></el-input>
-    <el-button class="btn-send-validcode" type="primary" @click="handleSendCaptcha">发送验证码</el-button>
+    <el-button class="btn-send-validcode" type="primary" disabled v-if="num">{{num}}s后重试</el-button>
+    <el-button class="btn-send-validcode" type="primary" @click="handleSendCaptcha" v-else>发送验证码</el-button>
   </el-form-item>
   <el-form-item label="新密码" prop="password">
     <el-input type="password" placeholder="请输入6-18位新密码" maxlength="18" v-model="formData.password"></el-input>
@@ -28,6 +29,7 @@ export default {
       value && value === this.formData.password ? callback() : callback(new Error())
     }
     return {
+      num: 0,
       loading: false,
       formData: {},
       rules: {
@@ -53,6 +55,7 @@ export default {
         this.$http.post('/user/reset_pwd', this.formData).then(data => {
           this.loading = false
           this.$message.success(data.info)
+          this.$router.replace({ name: 'login' })
         }).catch(err => {
           this.loading = false
           this.$message.error(err.message)
@@ -60,17 +63,28 @@ export default {
       })
     },
     handleSendCaptcha() {
+      this.startTid()
       this.$http.post('/user/email_captcha', {
         email: this.formData.email
-      }).then(({data}) => {
+      }).then(data => {
         this.$message.success(data.info)
       }).catch(err => {
         this.$message.error(err.message)
       })
+    },
+    startTid() {
+      this.num = 60
+      this.tid = setInterval(() => {
+        if (this.num > 0) {
+          this.num--
+        } else {
+          clearInterval(this.tid)
+        }
+      }, 1000)
     }
+  },
+  beforeDestroy() {
+    clearInterval(this.tid)
   }
 }
 </script>
-<style lang="less">
-
-</style>

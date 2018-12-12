@@ -79,6 +79,9 @@ export default {
       top: 0;
       right: 0;
     }
+    .btn-send-validcode {
+      min-width: 112px;
+    }
     .pic-captcha {
       width: 100px;
       height: 100%;
