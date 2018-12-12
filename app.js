@@ -25,6 +25,15 @@ app.use(expressSession({
 app.engine('swig', swig.renderFile)
 app.set('view engine', 'swig')
 
+// 闪现消息处理
+app.use((req, res, next) => {
+  if (req.session.flash) {
+    app.locals.flash = req.session.flash
+    delete req.session.flash
+  }
+  next()
+})
+
 require('./routes')(app)
 
 function startServer() {

@@ -1,7 +1,13 @@
 /**
  * 数据验证模块
  */
-const { EMAIL_REG, EMAIL_ERROR, USER_NAME_ERROR, USER_PWD_ERROR } = require('./constants')
+const { 
+  EMAIL_REG,
+  EMAIL_ERROR,
+  USER_NAME_ERROR,
+  USER_PWD_ERROR,
+  CAPTCHA_ERROR
+} = require('./constants')
 
 /**
  * 验证用户名
@@ -29,4 +35,13 @@ exports.validPwdResult = password => {
  */
 exports.validEmailResult = email => {
   return (typeof email !== 'string' || !EMAIL_REG.test(email.trim())) && EMAIL_ERROR
+}
+
+/**
+ * 验证邮箱
+ * @param {String} captcha
+ * @param {req} Request
+ */
+exports.validCaptchaResult = (captcha, req) => {
+  return (typeof captcha !== 'string' || captcha.toLowerCase() !== req.session.captcha) && CAPTCHA_ERROR
 }

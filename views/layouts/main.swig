@@ -2,18 +2,18 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="author" content="liliang">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  {% block title %}
-    <title>Document</title>
-  {% endblock %}
-  {% block head %}
-    
-  {% endblock %}
+  <title>
+    {% block title %}{% endblock %}
+  </title>
+  <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  {% block head %}{% endblock %}
 </head>
 <body>
-  {% block body %}
-    
-  {% endblock %}
+  <div class="container">
+    {% block body %}{% endblock %}
+  </div>
 </body>
 </html>

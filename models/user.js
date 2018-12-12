@@ -4,8 +4,11 @@ const userSchema = new mongoose.Schema({
   userName: String,
   password: String,
   email: String,
-  isActivate: Boolean,
-  activateCode: String,
+  isActivated: Boolean,
+  activateInfo: {
+    code: String,
+    date: Date
+  },
   createdDate: {
     type: Date,
     default: Date.now
